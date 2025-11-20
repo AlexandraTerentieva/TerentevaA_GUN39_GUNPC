@@ -39,6 +39,15 @@
             default:
                 Console.WriteLine("Wrong sign");
                 break;
+            case '&':
+                Console.WriteLine("Result of {0} & {1} = {2}", a, b, a & b);
+                break;
+            case '|':
+                Console.WriteLine("Result of {0} | {1} = {2}", a, b, a | b);
+                break;
+            case '^':
+                Console.WriteLine("Result of {0} ^ {1} = {2}", a, b, a ^ b);
+                break;
         }
     }
 }
