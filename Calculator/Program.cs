@@ -2,52 +2,41 @@
 {
     static void Main(string[] args)
     {
-        if (!Int32.TryParse(Console.ReadLine(), out var a))
+        Console.WriteLine("Enter first number:");
+        if (!Int32.TryParse(Console.ReadLine(), out int a))
         {
-            Console.WriteLine("Not a number!");
+            Console.WriteLine("Error!");
             return;
         }
-
-        if (!Int32.TryParse(Console.ReadLine(), out var b))
+        Console.WriteLine("Enter second number:");
+        if (!Int32.TryParse(Console.ReadLine(), out int b))
         {
-            Console.WriteLine("Not a number!");
+            Console.WriteLine("Error!");
             return;
         }
-
-        var s = Console.ReadLine();
-        var boolVar = true;
-        if (s.Length == 0 || s.Length > 1 && !boolVar)
+        Console.WriteLine("Enter operator (&, |, ^):");
+        string s = Console.ReadLine();
+        if (string.IsNullOrEmpty(s) || s.Length != 1 ||
+            (s[0] != '&' && s[0] != '|' && s[0] != '^'))
         {
             Console.WriteLine("Wrong sign");
             return;
         }
-
+        int result = 0;
         switch (s[0])
         {
-            case '+':
-                Console.WriteLine("Result of {0} + {1} = {2}", a, b, a + b);
-                break;
-            case '-':
-                Console.WriteLine("Result of {0} + {1} = {2}", a, b, a - b);
-                break;
-            case '*':
-                Console.WriteLine("Result of {0} * {1} = {2}", a, b, a * b);
-                break;
-            case '/':
-                Console.WriteLine("Result of {0} / {1} = {2}", a, b, a / b);
-                break;
-            default:
-                Console.WriteLine("Wrong sign");
-                break;
             case '&':
-                Console.WriteLine("Result of {0} & {1} = {2}", a, b, a & b);
+                result = a & b;
                 break;
             case '|':
-                Console.WriteLine("Result of {0} | {1} = {2}", a, b, a | b);
+                result = a | b;
                 break;
             case '^':
-                Console.WriteLine("Result of {0} ^ {1} = {2}", a, b, a ^ b);
+                result = a ^ b;
                 break;
         }
+        Console.WriteLine($"Decimal: {result}");
+        Console.WriteLine($"Binary: {Convert.ToString(result, 2)}");
+        Console.WriteLine($"Hexadecimal: 0x{result:X}");
     }
 }
