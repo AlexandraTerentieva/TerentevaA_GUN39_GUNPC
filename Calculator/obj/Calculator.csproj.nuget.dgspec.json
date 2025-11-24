@@ -11,7 +11,7 @@
         "projectName": "Calculator",
         "projectPath": "D:\\calculator\\Calculator\\Calculator.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\calculator\\Calculator\\obj\\",
+        "outputPath": "D:\\Calculator\\Calculator\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
