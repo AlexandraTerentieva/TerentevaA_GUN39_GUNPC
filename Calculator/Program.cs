@@ -1,224 +1,187 @@
-﻿namespace HomeWork
+﻿using System;
+using System.Collections.Generic;
+
+namespace HomeWork
 {
-    // Структура Interval - ТЗ 2
-    public struct Interval
+    internal class Program
     {
-        public float Min { get; }
-        public float Max { get; }
-
-        private static Random random = new Random();
-
-        public Interval(int minValue, int maxValue)
+        private class ListTask
         {
-            if (minValue > maxValue)
+            public void TaskLoop()
             {
-                (minValue, maxValue) = (maxValue, minValue);
-                Console.WriteLine("Incorrect input data. Values swapped.");
-            }
+                Console.WriteLine("=== TASK 1: LIST OPERATIONS ===");
+                Console.WriteLine("Enter '--exit' to quit");
+                List<string> list = new List<string>();
+                list.Add("Apple");
+                list.Add("Banana");
+                list.Add("Orange");
+                Console.Write("Enter a new string to add to the list: ");
+                string newString = Console.ReadLine();
+                if (newString == "--exit") return;
+                list.Add(newString);
+                Console.WriteLine("Current list contents:");
+                foreach (string item in list)
+                {
+                    Console.WriteLine(item);
+                }
+                Console.Write("Enter another string to insert in the middle: ");
+                string middleString = Console.ReadLine();
+                if (middleString == "--exit") return;
+                int middleIndex = list.Count / 2;
+                list.Insert(middleIndex, middleString);
 
-            if (minValue < 0)
-            {
-                minValue = 0;
-                Console.WriteLine("Incorrect input data. Negative value changed to 0.");
-            }
+                // Финальный вывод
+                Console.WriteLine("Final list contents:");
+                foreach (string item in list)
+                {
+                    Console.WriteLine(item);
+                }
 
-            if (maxValue < 0)
-            {
-                maxValue = 0;
-                Console.WriteLine("Incorrect input data. Negative value changed to 0.");
-            }
-
-            if (minValue == maxValue)
-            {
-                maxValue += 10;
-                Console.WriteLine("Incorrect input data. Max value increased by 10.");
-            }
-
-            Min = minValue;
-            Max = maxValue;
-        }
-
-        public float Get()
-        {
-            return (float)(random.NextDouble() * (Max - Min) + Min);
-        }
-    }
-
-    // Структура Room - ТЗ 2
-    public struct Room
-    {
-        public Unit Unit;
-        public Weapon Weapon;
-
-        public Room(Unit unit, Weapon weapon)
-        {
-            Unit = unit;
-            Weapon = weapon;
-        }
-    }
-
-    // Класс Dungeon - ТЗ 2
-    public class Dungeon
-    {
-        private Room[] rooms;
-
-        public Dungeon()
-        {
-            rooms = new Room[]
-            {
-                new Room(new Unit("Warrior", 0, 10), new Weapon("Sword", 5, 15)),
-                new Room(new Unit("Mage", 0, 8), new Weapon("Staff", 3, 12)),
-                new Room(new Unit("Archer", 0, 12), new Weapon("Bow", 4, 18))
-            };
-        }
-
-        public void ShowRooms()
-        {
-            for (int i = 0; i < rooms.Length; i++)
-            {
-                var room = rooms[i];
-                Console.WriteLine("Unit of room" + room.Unit);
-                Console.WriteLine("Weapon of room" + room.Weapon);
-                Console.WriteLine("---");
+                Console.Write("Press any key to exit...");
+                Console.ReadKey();
             }
         }
-    }
-
-    // Класс Unit - ТЗ 1 + доработки ТЗ 2
-    public class Unit
-    {
-        public string Name { get; }
-        public float Health => _health;
-        public Interval Damage { get; } // ТЗ 2: заменен на Interval
-        public float Armor { get; }
-
-        private float _health;
-
-        // ТЗ 1: Конструкторы
-        public Unit() : this("Unknown Unit")
+        private class DictionaryTask
         {
-        }
-
-        public Unit(string name) : this(name, 0, 5) // ТЗ 2: вызов нового конструктора
-        {
-        }
-
-        // ТЗ 2: Новый конструктор с параметрами урона
-        public Unit(string name, int minDamage, int maxDamage)
-        {
-            Name = name;
-            Damage = new Interval(minDamage, maxDamage); // ТЗ 2: Interval
-            Armor = 0.6f;
-            _health = 100f;
-        }
-
-        public float GetRealHealth()
-        {
-            return Health * (1f + Armor);
-        }
-
-        public bool SetDamage(float value)
-        {
-            _health -= value * Armor;
-            return _health <= 0f;
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
-
-    // Класс Weapon - ТЗ 1 + доработки ТЗ 2
-    public class Weapon
-    {
-        public string Name { get; }
-        public Interval Damage { get; private set; } // ТЗ 2: заменен на Interval
-        public float Durability { get; }
-
-        public Weapon(string name)
-        {
-            Name = name;
-            Durability = 1f;
-            Damage = new Interval(1, 10); // ТЗ 2: Interval
-        }
-
-        public Weapon(string name, int minDamage, int maxDamage) : this(name)
-        {
-            SetDamageParams(minDamage, maxDamage);
-        }
-
-        public void SetDamageParams(int minDamage, int maxDamage)
-        {
-            // ТЗ 1: Сообщения из оригинального задания
-            if (minDamage > maxDamage)
+            public void TaskLoop()
             {
-                (minDamage, maxDamage) = (maxDamage, minDamage);
-                Console.WriteLine($"Incorrect input data for weapon '{Name}'. Values swapped.");
-            }
+                Console.WriteLine("=== TASK 2: STUDENT GRADES DICTIONARY ===");
+                Console.WriteLine("Enter '--exit' to quit");
+                Dictionary<string, double> students = new Dictionary<string, double>();
+                Console.Write("Enter student name: ");
+                string name = Console.ReadLine();
+                if (name == "--exit") return;
 
-            if (minDamage < 1)
-            {
-                minDamage = 1;
-                Console.WriteLine($"Forced minimum value for weapon '{Name}'.");
-            }
+                Console.Write("Enter student grade (2-5): ");
+                string gradeInput = Console.ReadLine();
+                if (gradeInput == "--exit") return;
+                if (double.TryParse(gradeInput, out double grade) && grade >= 2 && grade <= 5)
+                {
+                    students[name] = grade;
+                    Console.WriteLine($"Student {name} added with grade {grade}");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid grade! Must be between 2 and 5.");
+                    return;
+                }
+                Console.Write("Enter student name to find grade: ");
+                string searchName = Console.ReadLine();
+                if (searchName == "--exit") return;
+                if (students.ContainsKey(searchName))
+                {
+                    Console.WriteLine($"Student {searchName} has grade: {students[searchName]}");
+                }
+                else
+                {
+                    Console.WriteLine($"Student {searchName} does not exist in the dictionary.");
+                }
 
-            if (maxDamage <= 1)
-            {
-                maxDamage = 10;
+                Console.Write("Press any key to exit...");
+                Console.ReadKey();
             }
-
-            Damage = new Interval(minDamage, maxDamage); // ТЗ 2: Interval
         }
-
-        public int GetDamage()
+        private class LinkedListTask
         {
-            // ТЗ 1: среднее арифметическое между MinDamage и MaxDamage
-            return ((int)Damage.Min + (int)Damage.Max) / 2;
-        }
+            private class Node
+            {
+                public string Data { get; set; }
+                public Node Previous { get; set; }
+                public Node Next { get; set; }
 
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
+                public Node(string data)
+                {
+                    Data = data;
+                }
+            }
+            public void TaskLoop()
+            {
+                Console.WriteLine("=== TASK 3: DOUBLY LINKED LIST ===");
+                Console.WriteLine("Enter '--exit' to quit");
 
-    class Program
-    {
+                Node head = null;
+                Node tail = null;
+                int count = 0;
+                Console.WriteLine("Create a list with 3 to 6 elements:");
+
+                while (count < 6)
+                {
+                    Console.Write($"Enter element {count + 1}: ");
+                    string input = Console.ReadLine();
+
+                    if (input == "--exit") break;
+
+                    if (!string.IsNullOrEmpty(input))
+                    {
+                        Node newNode = new Node(input);
+
+                        if (head == null)
+                        {
+                            head = newNode;
+                            tail = newNode;
+                        }
+                        else
+                        {
+                            tail.Next = newNode;
+                            newNode.Previous = tail;
+                            tail = newNode;
+                        }
+                        count++;
+                    }
+
+                    if (count >= 3 && count < 6)
+                    {
+                        Console.Write("Add more elements? (y/n): ");
+                        if (Console.ReadLine().ToLower() != "y") break;
+                    }
+                }
+                Console.WriteLine("List in forward order:");
+                Node current = head;
+                while (current != null)
+                {
+                    Console.Write($"{current.Data} ");
+                    current = current.Next;
+                }
+                Console.WriteLine();
+                Console.WriteLine("List in backward order:");
+                current = tail;
+                while (current != null)
+                {
+                    Console.Write($"{current.Data} ");
+                    current = current.Previous;
+                }
+                Console.WriteLine();
+
+                Console.Write("Press any key to exit...");
+                Console.ReadKey();
+            }
+        }
         static void Main(string[] args)
         {
-            // ТЗ 1: Тестирование оригинальных классов
-            Unit unit1 = new Unit();
-            Unit unit2 = new Unit("Warrior");
+            Console.WriteLine("Enter 1, 2 or 3 to select task:");
 
-            Console.WriteLine($"Unit 1: {unit1.Name}, Health: {unit1.Health}, Damage: {unit1.Damage}, Armor: {unit1.Armor}");
-            Console.WriteLine($"Unit 2: {unit2.Name}, Health: {unit2.Health}, Damage: {unit2.Damage}, Armor: {unit2.Armor}");
-            Console.WriteLine($"Unit 2 Real Health: {unit2.GetRealHealth()}");
-
-            bool isDead = unit2.SetDamage(50f);
-            Console.WriteLine($"After taking 50 damage: Health = {unit2.Health}, Is Dead: {isDead}");
-
-            Weapon sword = new Weapon("Sword", 5, 15);
-            Weapon axe = new Weapon("Axe", 10, 5);
-            Weapon brokenWeapon = new Weapon("Broken", -5, 1);
-
-            Console.WriteLine($"Weapon: {sword.Name}, Damage: {sword.GetDamage()}, Range: {sword.Damage.Min}-{sword.Damage.Max}");
-            Console.WriteLine($"Weapon: {axe.Name}, Damage: {axe.GetDamage()}, Range: {axe.Damage.Min}-{axe.Damage.Max}");
-            Console.WriteLine($"Weapon: {brokenWeapon.Name}, Damage: {brokenWeapon.GetDamage()}, Range: {brokenWeapon.Damage.Min}-{brokenWeapon.Damage.Max}");
-
-            Console.WriteLine("\n" + new string('=', 40));
-            Console.WriteLine("ТЗ 2: Dungeon with Rooms");
-            Console.WriteLine(new string('=', 40));
-
-            // ТЗ 2: создание Dungeon и вызов ShowRooms
-            Dungeon dungeon = new Dungeon();
-            dungeon.ShowRooms();
-
-            // Тестирование Interval
-            Console.WriteLine("\nTesting Interval:");
-            Interval interval = new Interval(5, 15);
-            Console.WriteLine($"Interval: {interval.Min}-{interval.Max}");
-            Console.WriteLine($"Random value: {interval.Get()}");
+            if (int.TryParse(Console.ReadLine(), out int task))
+            {
+                switch (task)
+                {
+                    case 1:
+                        new ListTask().TaskLoop();
+                        break;
+                    case 2:
+                        new DictionaryTask().TaskLoop();
+                        break;
+                    case 3:
+                        new LinkedListTask().TaskLoop();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid task number");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input");
+            }
         }
     }
 }

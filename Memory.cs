@@ -1,6 +1,5 @@
 ﻿namespace HomeWork
 {
-    // Структура Interval - ТЗ 2
     public struct Interval
     {
         public float Min { get; }
@@ -44,7 +43,6 @@
         }
     }
 
-    // Структура Room - ТЗ 2
     public struct Room
     {
         public Unit Unit;
@@ -57,7 +55,96 @@
         }
     }
 
-    // Класс Dungeon - ТЗ 2
+    public struct Unit
+    {
+        public string Name { get; }
+        public float Health => _health;
+        public Interval Damage { get; }
+        public float Armor { get; }
+
+        private float _health;
+
+        public Unit(string name) : this(name, 0, 5)
+        {
+        }
+
+        public Unit(string name, int minDamage, int maxDamage)
+        {
+            Name = name;
+            Damage = new Interval(minDamage, maxDamage);
+            Armor = 0.6f;
+            _health = 100f;
+        }
+
+        public float GetRealHealth()
+        {
+            return Health * (1f + Armor);
+        }
+
+        public bool SetDamage(float value)
+        {
+            float finalDamage = Math.Max(0, value - Armor);
+            _health -= finalDamage;
+            return _health <= 0f;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+
+    public struct Weapon
+    {
+        public string Name { get; }
+        public Interval Damage { get; private set; }
+        public float Durability { get; }
+
+        public Weapon(string name)
+        {
+            Name = name;
+            Durability = 1f;
+            Damage = new Interval(1, 10);
+        }
+
+        public Weapon(string name, int minDamage, int maxDamage) : this(name)
+        {
+            SetDamageParams(minDamage, maxDamage);
+        }
+
+        public void SetDamageParams(int minDamage, int maxDamage)
+        {
+            if (minDamage > maxDamage)
+            {
+                (minDamage, maxDamage) = (maxDamage, minDamage);
+                Console.WriteLine($"Incorrect input data for weapon '{Name}'. Values swapped.");
+            }
+
+            if (minDamage < 1)
+            {
+                minDamage = 1;
+                Console.WriteLine($"Forced minimum value for weapon '{Name}'.");
+            }
+
+            if (maxDamage <= 1)
+            {
+                maxDamage = 10;
+            }
+
+            Damage = new Interval(minDamage, maxDamage);
+        }
+
+        public int GetDamage()
+        {
+            return (int)Damage.Get();
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+
     public class Dungeon
     {
         private Room[] rooms;
@@ -77,109 +164,10 @@
             for (int i = 0; i < rooms.Length; i++)
             {
                 var room = rooms[i];
-                Console.WriteLine("Unit of room" + room.Unit);
-                Console.WriteLine("Weapon of room" + room.Weapon);
+                Console.WriteLine($"Unit of room: {room.Unit}");
+                Console.WriteLine($"Weapon of room: {room.Weapon}");
                 Console.WriteLine("---");
             }
-        }
-    }
-
-    // Класс Unit - ТЗ 1 + доработки ТЗ 2
-    public class Unit
-    {
-        public string Name { get; }
-        public float Health => _health;
-        public Interval Damage { get; } // ТЗ 2: заменен на Interval
-        public float Armor { get; }
-
-        private float _health;
-
-        // ТЗ 1: Конструкторы
-        public Unit() : this("Unknown Unit")
-        {
-        }
-
-        public Unit(string name) : this(name, 0, 5) // ТЗ 2: вызов нового конструктора
-        {
-        }
-
-        // ТЗ 2: Новый конструктор с параметрами урона
-        public Unit(string name, int minDamage, int maxDamage)
-        {
-            Name = name;
-            Damage = new Interval(minDamage, maxDamage); // ТЗ 2: Interval
-            Armor = 0.6f;
-            _health = 100f;
-        }
-
-        public float GetRealHealth()
-        {
-            return Health * (1f + Armor);
-        }
-
-        public bool SetDamage(float value)
-        {
-            _health -= value * Armor;
-            return _health <= 0f;
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
-
-    // Класс Weapon - ТЗ 1 + доработки ТЗ 2
-    public class Weapon
-    {
-        public string Name { get; }
-        public Interval Damage { get; private set; } // ТЗ 2: заменен на Interval
-        public float Durability { get; }
-
-        public Weapon(string name)
-        {
-            Name = name;
-            Durability = 1f;
-            Damage = new Interval(1, 10); // ТЗ 2: Interval
-        }
-
-        public Weapon(string name, int minDamage, int maxDamage) : this(name)
-        {
-            SetDamageParams(minDamage, maxDamage);
-        }
-
-        public void SetDamageParams(int minDamage, int maxDamage)
-        {
-            // ТЗ 1: Сообщения из оригинального задания
-            if (minDamage > maxDamage)
-            {
-                (minDamage, maxDamage) = (maxDamage, minDamage);
-                Console.WriteLine($"Incorrect input data for weapon '{Name}'. Values swapped.");
-            }
-
-            if (minDamage < 1)
-            {
-                minDamage = 1;
-                Console.WriteLine($"Forced minimum value for weapon '{Name}'.");
-            }
-
-            if (maxDamage <= 1)
-            {
-                maxDamage = 10;
-            }
-
-            Damage = new Interval(minDamage, maxDamage); // ТЗ 2: Interval
-        }
-
-        public int GetDamage()
-        {
-            // ТЗ 1: среднее арифметическое между MinDamage и MaxDamage
-            return ((int)Damage.Min + (int)Damage.Max) / 2;
-        }
-
-        public override string ToString()
-        {
-            return Name;
         }
     }
 
@@ -187,38 +175,26 @@
     {
         static void Main(string[] args)
         {
-            // ТЗ 1: Тестирование оригинальных классов
-            Unit unit1 = new Unit();
-            Unit unit2 = new Unit("Warrior");
-
-            Console.WriteLine($"Unit 1: {unit1.Name}, Health: {unit1.Health}, Damage: {unit1.Damage}, Armor: {unit1.Armor}");
-            Console.WriteLine($"Unit 2: {unit2.Name}, Health: {unit2.Health}, Damage: {unit2.Damage}, Armor: {unit2.Armor}");
-            Console.WriteLine($"Unit 2 Real Health: {unit2.GetRealHealth()}");
-
-            bool isDead = unit2.SetDamage(50f);
-            Console.WriteLine($"After taking 50 damage: Health = {unit2.Health}, Is Dead: {isDead}");
-
-            Weapon sword = new Weapon("Sword", 5, 15);
-            Weapon axe = new Weapon("Axe", 10, 5);
-            Weapon brokenWeapon = new Weapon("Broken", -5, 1);
-
-            Console.WriteLine($"Weapon: {sword.Name}, Damage: {sword.GetDamage()}, Range: {sword.Damage.Min}-{sword.Damage.Max}");
-            Console.WriteLine($"Weapon: {axe.Name}, Damage: {axe.GetDamage()}, Range: {axe.Damage.Min}-{axe.Damage.Max}");
-            Console.WriteLine($"Weapon: {brokenWeapon.Name}, Damage: {brokenWeapon.GetDamage()}, Range: {brokenWeapon.Damage.Min}-{brokenWeapon.Damage.Max}");
-
-            Console.WriteLine("\n" + new string('=', 40));
-            Console.WriteLine("ТЗ 2: Dungeon with Rooms");
+            Console.WriteLine("Testing Dungeon:");
             Console.WriteLine(new string('=', 40));
 
-            // ТЗ 2: создание Dungeon и вызов ShowRooms
             Dungeon dungeon = new Dungeon();
             dungeon.ShowRooms();
 
-            // Тестирование Interval
             Console.WriteLine("\nTesting Interval:");
             Interval interval = new Interval(5, 15);
             Console.WriteLine($"Interval: {interval.Min}-{interval.Max}");
             Console.WriteLine($"Random value: {interval.Get()}");
+
+            Console.WriteLine("\nTesting Unit damage mechanics:");
+            Unit testUnit = new Unit("Test Warrior", 5, 10);
+            Console.WriteLine($"Initial health: {testUnit.Health}");
+            bool isDead = testUnit.SetDamage(10f);
+            Console.WriteLine($"After taking 10 damage: Health = {testUnit.Health}, Is Dead: {isDead}");
+
+            Console.WriteLine("\nTesting Weapon damage:");
+            Weapon testWeapon = new Weapon("Test Sword", 8, 12);
+            Console.WriteLine($"Weapon: {testWeapon.Name}, Damage: {testWeapon.GetDamage()}");
         }
     }
 }

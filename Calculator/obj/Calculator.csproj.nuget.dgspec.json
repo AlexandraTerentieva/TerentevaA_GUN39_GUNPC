@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Calculator\\Calculator\\Calculator.csproj": {}
+    "D:\\calculator\\Calculator\\Calculator.csproj": {}
   },
   "projects": {
-    "D:\\Calculator\\Calculator\\Calculator.csproj": {
+    "D:\\calculator\\Calculator\\Calculator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Calculator\\Calculator\\Calculator.csproj",
+        "projectUniqueName": "D:\\calculator\\Calculator\\Calculator.csproj",
         "projectName": "Calculator",
-        "projectPath": "D:\\Calculator\\Calculator\\Calculator.csproj",
+        "projectPath": "D:\\calculator\\Calculator\\Calculator.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
         "outputPath": "D:\\Calculator\\Calculator\\obj\\",
         "projectStyle": "PackageReference",
