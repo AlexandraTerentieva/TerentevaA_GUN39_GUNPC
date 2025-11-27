@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="D:\Calculator\strings and symbols.cs" Link="strings and symbols.cs" />
+  </ItemGroup>
+
 </Project>

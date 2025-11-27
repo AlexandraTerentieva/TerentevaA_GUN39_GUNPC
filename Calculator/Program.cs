@@ -1,224 +1,127 @@
-﻿namespace HomeWork
+﻿using System.Text;
+namespace HomeWork
 {
-    // Структура Interval - ТЗ 2
-    public struct Interval
+    public class StringOperations
+{
+    // Задание 1: Конкатенация двух строк
+    public static string ConcatenateStrings(string first, string second)
     {
-        public float Min { get; }
-        public float Max { get; }
-
-        private static Random random = new Random();
-
-        public Interval(int minValue, int maxValue)
-        {
-            if (minValue > maxValue)
-            {
-                (minValue, maxValue) = (maxValue, minValue);
-                Console.WriteLine("Incorrect input data. Values swapped.");
-            }
-
-            if (minValue < 0)
-            {
-                minValue = 0;
-                Console.WriteLine("Incorrect input data. Negative value changed to 0.");
-            }
-
-            if (maxValue < 0)
-            {
-                maxValue = 0;
-                Console.WriteLine("Incorrect input data. Negative value changed to 0.");
-            }
-
-            if (minValue == maxValue)
-            {
-                maxValue += 10;
-                Console.WriteLine("Incorrect input data. Max value increased by 10.");
-            }
-
-            Min = minValue;
-            Max = maxValue;
-        }
-
-        public float Get()
-        {
-            return (float)(random.NextDouble() * (Max - Min) + Min);
-        }
+        return first + second;
     }
 
-    // Структура Room - ТЗ 2
-    public struct Room
+    // Задание 2: Приветствие пользователя с форматированием
+    public static string GreetUser(string name, int age)
     {
-        public Unit Unit;
-        public Weapon Weapon;
-
-        public Room(Unit unit, Weapon weapon)
-        {
-            Unit = unit;
-            Weapon = weapon;
-        }
+        return $"Hello, {name}!\nYou are {age} years old.";
     }
 
-    // Класс Dungeon - ТЗ 2
-    public class Dungeon
+    // Задание 3: Анализ строки
+    public static string AnalyzeString(string input)
     {
-        private Room[] rooms;
+        int length = input.Length;
+        string upper = input.ToUpper();
+        string lower = input.ToLower();
+        return $"Length: {length}\nUpper: {upper}\nLower: {lower}";
+    }
 
-        public Dungeon()
-        {
-            rooms = new Room[]
-            {
-                new Room(new Unit("Warrior", 0, 10), new Weapon("Sword", 5, 15)),
-                new Room(new Unit("Mage", 0, 8), new Weapon("Staff", 3, 12)),
-                new Room(new Unit("Archer", 0, 12), new Weapon("Bow", 4, 18))
-            };
-        }
+    // Задание 4: Первые 5 символов строки
+    public static string GetFirstFiveCharacters(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return string.Empty;
 
-        public void ShowRooms()
+        return input.Length <= 5 ? input : input.Substring(0, 5);
+    }
+
+    // Задание 5: Конкатенация массива строк через StringBuilder
+    public static StringBuilder ConcatenateStringArray(string[] words)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        if (words == null || words.Length == 0)
+            return sb;
+
+        foreach (string word in words)
         {
-            for (int i = 0; i < rooms.Length; i++)
+            if (!string.IsNullOrEmpty(word))
             {
-                var room = rooms[i];
-                Console.WriteLine("Unit of room" + room.Unit);
-                Console.WriteLine("Weapon of room" + room.Weapon);
-                Console.WriteLine("---");
+                if (sb.Length > 0)
+                    sb.Append(" ");
+                sb.Append(word);
             }
         }
+        return sb;
     }
 
-    // Класс Unit - ТЗ 1 + доработки ТЗ 2
-    public class Unit
+    // Задание 6: Замена слов в строке
+    public static string ReplaceWords(string inputString, string wordToReplace, string replacementWord)
     {
-        public string Name { get; }
-        public float Health => _health;
-        public Interval Damage { get; } // ТЗ 2: заменен на Interval
-        public float Armor { get; }
+        if (string.IsNullOrEmpty(inputString) || string.IsNullOrEmpty(wordToReplace))
+            return inputString;
 
-        private float _health;
-
-        // ТЗ 1: Конструкторы
-        public Unit() : this("Unknown Unit")
-        {
-        }
-
-        public Unit(string name) : this(name, 0, 5) // ТЗ 2: вызов нового конструктора
-        {
-        }
-
-        // ТЗ 2: Новый конструктор с параметрами урона
-        public Unit(string name, int minDamage, int maxDamage)
-        {
-            Name = name;
-            Damage = new Interval(minDamage, maxDamage); // ТЗ 2: Interval
-            Armor = 0.6f;
-            _health = 100f;
-        }
-
-        public float GetRealHealth()
-        {
-            return Health * (1f + Armor);
-        }
-
-        public bool SetDamage(float value)
-        {
-            _health -= value * Armor;
-            return _health <= 0f;
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
+        return inputString.Replace(wordToReplace, replacementWord ?? "");
     }
 
-    // Класс Weapon - ТЗ 1 + доработки ТЗ 2
-    public class Weapon
+    // Метод для демонстрации всех операций
+    public static void RunAllStringOperations()
     {
-        public string Name { get; }
-        public Interval Damage { get; private set; } // ТЗ 2: заменен на Interval
-        public float Durability { get; }
+        Console.WriteLine("=== ТЕСТИРОВАНИЕ ВСЕХ МЕТОДОВ ===");
 
-        public Weapon(string name)
-        {
-            Name = name;
-            Durability = 1f;
-            Damage = new Interval(1, 10); // ТЗ 2: Interval
-        }
+        // Тест 1: ConcatenateStrings
+        Console.WriteLine("\n1. ConcatenateStrings:");
+        string result1 = ConcatenateStrings("Hello", "World");
+        Console.WriteLine($"   'Hello' + 'World' = '{result1}'");
 
-        public Weapon(string name, int minDamage, int maxDamage) : this(name)
-        {
-            SetDamageParams(minDamage, maxDamage);
-        }
+        string result1_2 = ConcatenateStrings("C# ", "Programming");
+        Console.WriteLine($"   'C# ' + 'Programming' = '{result1_2}'");
 
-        public void SetDamageParams(int minDamage, int maxDamage)
-        {
-            // ТЗ 1: Сообщения из оригинального задания
-            if (minDamage > maxDamage)
-            {
-                (minDamage, maxDamage) = (maxDamage, minDamage);
-                Console.WriteLine($"Incorrect input data for weapon '{Name}'. Values swapped.");
-            }
+        // Тест 2: GreetUser
+        Console.WriteLine("\n2. GreetUser:");
+        string result2 = GreetUser("Alice", 30);
+        Console.WriteLine($"   Name: Alice, Age: 30:\n{result2}");
 
-            if (minDamage < 1)
-            {
-                minDamage = 1;
-                Console.WriteLine($"Forced minimum value for weapon '{Name}'.");
-            }
+        string result2_2 = GreetUser("Bob", 25);
+        Console.WriteLine($"   Name: Bob, Age: 25:\n{result2_2}");
 
-            if (maxDamage <= 1)
-            {
-                maxDamage = 10;
-            }
+        // Тест 3: AnalyzeString
+        Console.WriteLine("\n3. AnalyzeString:");
+        string result3 = AnalyzeString("Hello World");
+        Console.WriteLine($"   Input: 'Hello World'\n{result3}");
 
-            Damage = new Interval(minDamage, maxDamage); // ТЗ 2: Interval
-        }
+        string result3_2 = AnalyzeString("Test String");
+        Console.WriteLine($"   Input: 'Test String'\n{result3_2}");
 
-        public int GetDamage()
-        {
-            // ТЗ 1: среднее арифметическое между MinDamage и MaxDamage
-            return ((int)Damage.Min + (int)Damage.Max) / 2;
-        }
+        // Тест 4: GetFirstFiveCharacters
+        Console.WriteLine("\n4. GetFirstFiveCharacters:");
+        string result4 = GetFirstFiveCharacters("Programming");
+        Console.WriteLine($"   'Programming' -> '{result4}'");
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        string result4_2 = GetFirstFiveCharacters("Hi");
+        Console.WriteLine($"   'Hi' -> '{result4_2}'");
+
+        string result4_3 = GetFirstFiveCharacters("");
+        Console.WriteLine($"   '' -> '{result4_3}'");
+
+        // Тест 5: ConcatenateStringArray
+        Console.WriteLine("\n5. ConcatenateStringArray:");
+        string[] words1 = { "This", "is", "a", "test" };
+        StringBuilder result5 = ConcatenateStringArray(words1);
+        Console.WriteLine($"   ['This', 'is', 'a', 'test'] -> '{result5}'");
+
+        string[] words2 = { "C#", "is", "awesome" };
+        StringBuilder result5_2 = ConcatenateStringArray(words2);
+        Console.WriteLine($"   ['C#', 'is', 'awesome'] -> '{result5_2}'");
+
+        // Тест 6: ReplaceWords
+        Console.WriteLine("\n6. ReplaceWords:");
+        string result6 = ReplaceWords("Hello world", "world", "universe");
+        Console.WriteLine($"   'Hello world', 'world'->'universe' = '{result6}'");
+
+        string result6_2 = ReplaceWords("cat dog cat", "cat", "bird");
+        Console.WriteLine($"   'cat dog cat', 'cat'->'bird' = '{result6_2}'");
+
+        string result6_3 = ReplaceWords("Hello world", "python", "C#");
+        Console.WriteLine($"   'Hello world', 'python'->'C#' = '{result6_3}'");
     }
-
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            // ТЗ 1: Тестирование оригинальных классов
-            Unit unit1 = new Unit();
-            Unit unit2 = new Unit("Warrior");
-
-            Console.WriteLine($"Unit 1: {unit1.Name}, Health: {unit1.Health}, Damage: {unit1.Damage}, Armor: {unit1.Armor}");
-            Console.WriteLine($"Unit 2: {unit2.Name}, Health: {unit2.Health}, Damage: {unit2.Damage}, Armor: {unit2.Armor}");
-            Console.WriteLine($"Unit 2 Real Health: {unit2.GetRealHealth()}");
-
-            bool isDead = unit2.SetDamage(50f);
-            Console.WriteLine($"After taking 50 damage: Health = {unit2.Health}, Is Dead: {isDead}");
-
-            Weapon sword = new Weapon("Sword", 5, 15);
-            Weapon axe = new Weapon("Axe", 10, 5);
-            Weapon brokenWeapon = new Weapon("Broken", -5, 1);
-
-            Console.WriteLine($"Weapon: {sword.Name}, Damage: {sword.GetDamage()}, Range: {sword.Damage.Min}-{sword.Damage.Max}");
-            Console.WriteLine($"Weapon: {axe.Name}, Damage: {axe.GetDamage()}, Range: {axe.Damage.Min}-{axe.Damage.Max}");
-            Console.WriteLine($"Weapon: {brokenWeapon.Name}, Damage: {brokenWeapon.GetDamage()}, Range: {brokenWeapon.Damage.Min}-{brokenWeapon.Damage.Max}");
-
-            Console.WriteLine("\n" + new string('=', 40));
-            Console.WriteLine("ТЗ 2: Dungeon with Rooms");
-            Console.WriteLine(new string('=', 40));
-
-            // ТЗ 2: создание Dungeon и вызов ShowRooms
-            Dungeon dungeon = new Dungeon();
-            dungeon.ShowRooms();
-
-            // Тестирование Interval
-            Console.WriteLine("\nTesting Interval:");
-            Interval interval = new Interval(5, 15);
-            Console.WriteLine($"Interval: {interval.Min}-{interval.Max}");
-            Console.WriteLine($"Random value: {interval.Get()}");
-        }
-    }
+}
 }
