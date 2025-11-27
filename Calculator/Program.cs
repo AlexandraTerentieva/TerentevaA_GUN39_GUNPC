@@ -3,19 +3,16 @@ namespace HomeWork
 {
     public class StringOperations
 {
-    // Задание 1: Конкатенация двух строк
     public static string ConcatenateStrings(string first, string second)
     {
         return first + second;
     }
 
-    // Задание 2: Приветствие пользователя с форматированием
     public static string GreetUser(string name, int age)
     {
         return $"Hello, {name}!\nYou are {age} years old.";
     }
 
-    // Задание 3: Анализ строки
     public static string AnalyzeString(string input)
     {
         int length = input.Length;
@@ -24,7 +21,6 @@ namespace HomeWork
         return $"Length: {length}\nUpper: {upper}\nLower: {lower}";
     }
 
-    // Задание 4: Первые 5 символов строки
     public static string GetFirstFiveCharacters(string input)
     {
         if (string.IsNullOrEmpty(input))
@@ -33,7 +29,6 @@ namespace HomeWork
         return input.Length <= 5 ? input : input.Substring(0, 5);
     }
 
-    // Задание 5: Конкатенация массива строк через StringBuilder
     public static StringBuilder ConcatenateStringArray(string[] words)
     {
         StringBuilder sb = new StringBuilder();
@@ -53,7 +48,6 @@ namespace HomeWork
         return sb;
     }
 
-    // Задание 6: Замена слов в строке
     public static string ReplaceWords(string inputString, string wordToReplace, string replacementWord)
     {
         if (string.IsNullOrEmpty(inputString) || string.IsNullOrEmpty(wordToReplace))
@@ -62,12 +56,10 @@ namespace HomeWork
         return inputString.Replace(wordToReplace, replacementWord ?? "");
     }
 
-    // Метод для демонстрации всех операций
     public static void RunAllStringOperations()
     {
         Console.WriteLine("=== ТЕСТИРОВАНИЕ ВСЕХ МЕТОДОВ ===");
 
-        // Тест 1: ConcatenateStrings
         Console.WriteLine("\n1. ConcatenateStrings:");
         string result1 = ConcatenateStrings("Hello", "World");
         Console.WriteLine($"   'Hello' + 'World' = '{result1}'");
@@ -75,7 +67,6 @@ namespace HomeWork
         string result1_2 = ConcatenateStrings("C# ", "Programming");
         Console.WriteLine($"   'C# ' + 'Programming' = '{result1_2}'");
 
-        // Тест 2: GreetUser
         Console.WriteLine("\n2. GreetUser:");
         string result2 = GreetUser("Alice", 30);
         Console.WriteLine($"   Name: Alice, Age: 30:\n{result2}");
@@ -83,7 +74,6 @@ namespace HomeWork
         string result2_2 = GreetUser("Bob", 25);
         Console.WriteLine($"   Name: Bob, Age: 25:\n{result2_2}");
 
-        // Тест 3: AnalyzeString
         Console.WriteLine("\n3. AnalyzeString:");
         string result3 = AnalyzeString("Hello World");
         Console.WriteLine($"   Input: 'Hello World'\n{result3}");
@@ -91,7 +81,6 @@ namespace HomeWork
         string result3_2 = AnalyzeString("Test String");
         Console.WriteLine($"   Input: 'Test String'\n{result3_2}");
 
-        // Тест 4: GetFirstFiveCharacters
         Console.WriteLine("\n4. GetFirstFiveCharacters:");
         string result4 = GetFirstFiveCharacters("Programming");
         Console.WriteLine($"   'Programming' -> '{result4}'");
@@ -102,7 +91,6 @@ namespace HomeWork
         string result4_3 = GetFirstFiveCharacters("");
         Console.WriteLine($"   '' -> '{result4_3}'");
 
-        // Тест 5: ConcatenateStringArray
         Console.WriteLine("\n5. ConcatenateStringArray:");
         string[] words1 = { "This", "is", "a", "test" };
         StringBuilder result5 = ConcatenateStringArray(words1);
@@ -112,7 +100,6 @@ namespace HomeWork
         StringBuilder result5_2 = ConcatenateStringArray(words2);
         Console.WriteLine($"   ['C#', 'is', 'awesome'] -> '{result5_2}'");
 
-        // Тест 6: ReplaceWords
         Console.WriteLine("\n6. ReplaceWords:");
         string result6 = ReplaceWords("Hello world", "world", "universe");
         Console.WriteLine($"   'Hello world', 'world'->'universe' = '{result6}'");
