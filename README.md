@@ -1,1 +1,0 @@
-# TerentevaA_GUN39_GUNPC
